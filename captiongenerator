@@ -1,0 +1,33 @@
+# Install gradio if not already installed
+!pip install gradio
+
+#Import modules
+from PIL import Image
+from transformers import BlipProcessor, BlipForConditionalGeneration
+import gradio as gr
+import torch
+
+# Load model and processor
+processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
+model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
+
+# Move model to GPU if available
+device = "cuda" if torch.cuda.is_available() else "cpu"
+model.to(device)
+
+def generate_caption(img):
+    img_input = Image.fromarray(img)  # Ensure image format is correct
+    inputs = processor(img_input, return_tensors="pt").to(device)  # Move inputs to device
+    out = model.generate(**inputs)
+    caption = processor.decode(out[0], skip_special_tokens=True)
+    return caption
+
+# Create Gradio Interface
+demo = gr.Interface(
+    fn=generate_caption,
+    inputs=gr.Image(label="Upload Image"),
+    outputs=gr.Textbox(label="Generated Caption"),
+)
+
+# Launch Gradio App
+demo.launch()
