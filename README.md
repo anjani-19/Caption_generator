@@ -57,7 +57,3 @@ The Python script performs the following steps:
 * **`generate_caption` Function**: This function takes an image as input, preprocesses it using the BLIP processor, generates a caption using the BLIP model, and decodes the output into a human-readable string.
 * **Gradio Interface**: Creates a simple web interface with an image upload component and a text box to display the generated caption.
 * **Launches the Interface**: Starts the Gradio web server, making the interface accessible in your browser.
-
-## Example
-
-Upon uploading an image of a cat, the generated caption might be something like:
